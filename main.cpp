@@ -32,6 +32,11 @@ duration stridestamp(int stride, int associativity) {
         auto t1 = timing::now();
         s += (t1 - t0).count();
     }
+
+    FILE* dump = fopen("/dev/null", "w");
+    fprintf(dump, "%u", next);
+    fclose(dump);
+
     free(cache);
     return s / loops;
 }
@@ -61,10 +66,12 @@ pair<int, int> measureWhatever() {
         duration prev = 0;
         for (int associativity = 1; associativity <= maxAssociativity; ++associativity) {
             duration t = stridestamp(stride, associativity);
+            printf("[%d, %d]: %lld ", stride, associativity, t);
             if (associativity != 1 && diff(t, prev))
                 currentJumps.push_back(associativity - 1);
             prev = t;
         }
+        printf("\n");
 
         int minJump = findMinShared(previousJumps, currentJumps);
         if (minJump != -1) {
