@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <vector>
 
 // cache = sets * lineSize * associativity
 // waySize = sets * lineSize
@@ -16,7 +17,7 @@ const int loops = 20;
 const int maxCacheSize = 1 << 10 << 10;
 const int maxAssociativity = 32 + 1;
 
-duration stridestamp(int stride, int associativity) __attribute__ ((optnone)) {
+duration stridestamp(int stride, int associativity) {
     char *cache = (char*)malloc(maxCacheSize);
     uint next = stride * (associativity - 1);
     *(uint*)cache = next;
